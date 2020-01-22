@@ -6,9 +6,36 @@ output:
   html_notebook: default
 ---
 
-# Lab 3 - Chlamydomas (?)
+# Lab 3 - Using Digital Microscopy to measure Chlamydomonas flagella
 
 
 Might be a good resource or model: http://www.stat.ucla.edu/~rgould/110as02/bsci
 
-Test edits
+The goals of this tutorial are to:
+- learn how to import data in a spreadsheet to R Studio
+- calculate the mean of your measured flagella lengths
+- calculate the 95% confidence intervals of the mean flagella length
+- plot the mean as a point with error bars on a graph
+
+Now that you have collected measurements for 10 Chlamydomonas flagella, you must import your spreadsheet of data to R Studio. The format of the columns of data is important, as well as the titles of the columns of data. 
+
+Before you move on and discover how to load your data into R, it might be useful to go over the following checklist that will make it easier to import the data correctly into R:
+
+With spreadsheets, the first row is usually reserved for the header, while the first column is used to identify the sampling unit;
+- Avoid names, values or fields with blank spaces, otherwise each word will be interpreted as a separate variable, resulting in errors that are related to the number of elements per line in your data set;
+- If you want to concatenate words, inserting a . in between to words instead of a space;
+- Short names are prefered over longer names;
+- Try to avoid using names that contain symbols such as ?, $,%, ^, &, *, (, ),-,#, ?,,,<,>, /, |, \, [ ,] ,{, and };
+- Delete any comments that you have made in your Excel file to avoid extra columns or NA’s to be added to your file
+- Make sure that any missing values in your data set are indicated with NA.
+
+
+Once you have checked that your spreadsheet follows these basic rules, save it as a .csv file in a BIO 110 folder on the desktop.  
+
+First you must upload your .csv file to R Studio in the bottom right window using the Upload button.  Browse to locate your file and click Upload.  
+#Should upload to home or bio110-week3? 
+
+#That's all I have time for now.  
+https://rcompanion.org/handbook/C_03.html
+This stats site and its companion R handbook are Greg's favorites.  I thought it might help with finding the code we need.
+
