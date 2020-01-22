@@ -1,0 +1,33 @@
+Week 3: simple spreadsheet format (no timepoints), upload, and then mean, 95% conf in lab with R notebook
+
+
+
+data<-read.csv("chlamytestdata.csv", header=T)
+#compute the mean for a single time period
+mean(data$X25_min)
+#unfortunately, there is no equivalent function for confidence intervals
+#the only way I know to compute a 95% confidence interval for a single variable is to use the t.test function
+t.test(data$X25_min)
+#in the t.test output, you should see the limits are 1.18376 and 3.05624
+#I'm honestly not sure how to graph this when there is just one time point. Margaret is probably more deft.
+
+#in order to graph means and ci's for a whole series of times, I had to install several packages in addition to base R
+#first, I rearranged the data so that there were only 2 columns: one for length and one for time
+#I called this file "chlamyrevised.csv"
+revdata<-read.csv("chlamyrevised.csv", header=T)
+#then I loaded some additional packages: Rmisc and ggplot2
+install.packages("Rmisc")
+install.packages("ggplot2")
+library(Rmisc)
+library(ggplot2)
+#I used a function called summarySE from Rmisc to create a new data table of the means and confidence intervals for each different time period
+#and I assigned that table the name "newdata"
+newdata<-summarySE(data=revdata, measurevar="length", groupvar="time")
+#then I used the ggplot function from ggplot2 to create the graph
+ggplot(newdata,aes(x=time, length))+geom_errorbar(aes(ymin=length-ci, ymax=length+ci), width=.1)+geom_point()
+#if you want the points to be larger or the error bars to have caps there are ways to do that
+#and of course different axis labels, etc.
+#but first I thought I'd see if this was what you are needing
+
+#I don't like the fact that one has to load all these special packages and use such complicated commands!
+#but I was not able to find a simpler approach
