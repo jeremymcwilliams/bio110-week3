@@ -12,10 +12,10 @@ output:
 Might be a good resource or model: http://www.stat.ucla.edu/~rgould/110as02/bsci
 
 The goals of this tutorial are to:
-- learn how to import data in a spreadsheet to R Studio
-- calculate the mean of your measured flagella lengths
-- calculate the 95% confidence intervals of the mean flagella length
-- plot the mean as a point with error bars on a graph
+* learn how to import data in a spreadsheet to R Studio
+* calculate the mean of your measured flagella lengths
+* calculate the 95% confidence intervals of the mean flagella length
+* plot the mean as a point with error bars on a graph
 
 Now that you have collected measurements for 10 Chlamydomonas flagella, you must import your spreadsheet of data to R Studio. The format of the columns of data is important, as well as the titles of the columns of data. 
 
@@ -32,8 +32,69 @@ With spreadsheets, the first row is usually reserved for the header, while the f
 
 Once you have checked that your spreadsheet follows these basic rules, save it as a .csv file in a BIO 110 folder on the desktop.  
 
-First you must upload your .csv file to R Studio in the bottom right window using the Upload button.  Browse to locate your file and click Upload.  
-#Should upload to home or bio110-week3? 
+First you must upload your .csv file to R Studio in the bottom right window using the Upload button.  Browse to locate your file and click Upload.  Make sure it's loaded into the bio110-week3 folder.
+
+Before writing any R code, we'll need to load some R packages in order to use some of the specific functions we want. Run the code chunk below to make sure these functions are available to your environement:
+
+```{r}
+
+library(readr)
+library(Rmisc)
+library(ggplot2)
+library(rcompanion)
+
+
+```
+ 
+
+Now you'll want to load your data as a data frame into R by assigning it to a variable:
+
+NOTE!! data below is just for testing....will remove it (and this sentence) when done. !! END NOTEs
+
+```{r}
+# for example:
+# myData<-read_csv("myData.csv")
+mydata<-read_csv("test1.csv")
+
+
+# confirm by printing your variable
+# myData
+mydata
+
+
+```
+
+
+Next, you'll want to create a new variable that just has the column data of your measurements. You can do this with this syntax:
+
+myColumn<-datasetVariable$columnName
+
+So if your data frame variable is "myData", and your column header is "Measurements", then it would look like this (the variable name "sampleData" is completely arbitrary):
+
+sampleData<-myData$Measurements
+
+```{r}
+# create a new variable with your measurement column data, and print it out to ensure it worked. 
+
+sampledata<-mydata$Measurement
+
+sampledata
+str(sampledata)
+summary(sampledata)
+
+
+#just to test!
+#ggplot(data=mydata, mapping=aes(x=Measurement))+geom_histogram(bins=15)
+# http://rstudio-pubs-static.s3.amazonaws.com/257936_76b37753334b400ea28de4856ccc4f4f.html#calulating_the_confidence_intervals
+
+
+
+```
+
+
+
+
+
 
 #That's all I have time for now.  
 https://rcompanion.org/handbook/C_03.html
