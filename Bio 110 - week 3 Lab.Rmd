@@ -48,17 +48,16 @@ library(rcompanion)
 
 Now you'll want to load your data as a data frame into R by assigning it to a variable:
 
-NOTE!! data below is just for testing....will remove it (and this sentence) when done. !! END NOTEs
+
 
 ```{r}
 # for example:
 # myData<-read_csv("myData.csv")
-myData<-read_csv("test1.csv")
+
 
 
 # confirm by printing your variable
-# myData
-myData
+
 
 
 ```
@@ -108,37 +107,78 @@ Below, create variables for the mean, ci, and the upper and lower limits of the 
 
 ```
 
+## Plots with ggplot
 
+Now we have the data needed to create a plot. Beginning with the lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. We're likely going to use ggplot for the remainder of the labs this semester.
 
-Now we have the data needed to create a plot. Beginning with the lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. 
+The "gg" translates to "grammar of graphics", and is founded in the idea that all data visualizations are comprised of three components:
 
+* data set
+* aesthetics, or visual marks that represent the data (i.e. the stuff that you see)
+* geometric objects, or "geoms" (e.g the type of plot)
 
-**** MORE GGPLOT STUFF HERE *****
+Let's first look at the basic structure of ggplot code:
 
+ggplot(data=myData, mapping=aes(x=someValue, y=anotherValue))+geom_point()
 
+In the code above, the three components are represented as such:
+
+* data set is "myData", typically a variable representing a data frame
+* aesthetics (mapping=aes(...)) refers to the points or data that appear. The values in the aes portion can vary depending upon the type of plot you create (refer to the ggplot2-cheatsheet.pdf in the files section for more info). x and y could be a single point or variabel, refer to a column of data, or could be text.
+* the geom, or type of plot, is represented by "geom_point()". Each type of plot has a different function (e.g. geom_bar(), geom_line(), etc.).
+
+Notice that "geom_point()" is proceeded with a "+". The "+" is part of the ggplot syntax, and is a way to "chain" functions together. We'll do more of this soon to add more components to the plot. 
+
+Start off by creating a plot using the code sample above. Make sure you use your variable for the data frame in the "data=" portion, use your mean variable for the y-value, and set the x-value equal to some descriptive text (since it's text, make sure you use quotes).
 
 ```{r}
 
-
-
-ggplot(data=myData, mapping=aes(y=myMean, x="name of group"))+geom_point()+geom_errorbar(mapping=aes(ymin=lower, ymax=upper), width=0.1)+ylim(0,10)+labs(title="my title", x="my x label", y="my y axis label")
-
+# ggplot code here:
 
 
 
+```
+
+You'll notice that the y-axis has an auto-generated range. Let's explicitly define our range by chaining the "ylim" function to the end of our plot. ylim takes an ordered pair, representing the minimum and maximim y-axis values (e.g. ylim(0,100)). Make sure you start with 0, and use a reasonable value for the max.
+
+```{r}
+# redo your plot, and chain "ylim" to the end
+
+
+```
+
+Now let's add the error bars representign the 95% confidence interval. It's the same code you just wrote, plus chaining the geom_errorbar() function. Since the error bar is "stuff that you see", you use the same "mapping=aes(...)" syntax as in the ggplot() function. In this case, it would look like:
+
+geom_errorbar(mapping=aes(ymin=minValue, ymax=maxValue))
+
+You can also adjust the width of your errorbar like this:
+
+geom_errorbar(mapping=aes(ymin=minValue, ymax=maxValue), width=0.5)
+
+Below, chain this function on to your plot code, and use your confidence interval min & max for the ymin and ymax values. Play around with different values for "width", until it seems ok to you:
+
+```{r}
+
+# plot code, adding the geom_errorbar() function
+
+
+```
+
+
+Finally, you can add custom labels by chaining the labs() function to your ggplot code. The syntax is:
+
+labs(title="my title", x="my x label", y="my y axis label")
+
+Chain this to your code, and run it below:
+
+```{r}
+
+# final plot, chaining the labs() function:
 
 
 ```
 
 
 
-
-
-
-
-
-
-#That's all I have time for now.  
-https://rcompanion.org/handbook/C_03.html
-This stats site and its companion R handbook are Greg's favorites.  I thought it might help with finding the code we need.
+Make sure you copy your image and email it to your instructor.
 
