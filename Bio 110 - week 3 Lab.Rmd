@@ -65,103 +65,61 @@ myData
 
 
 
-```{r}
-# create a new variable with your measurement column data, and print it out to ensure it worked. 
 
-
-
-#just to test!
-#ggplot(data=mydata, mapping=aes(x=Measurement))+geom_histogram(bins=15)
-# http://rstudio-pubs-static.s3.amazonaws.com/257936_76b37753334b400ea28de4856ccc4f4f.html#calulating_the_confidence_intervals
-
-
-
-```
-
-
-REVIEWERS! There are two options for 
 
 ## Generating statistics for plots
 
-Now we can determine some basic statistics from that data, like mean and standard deviation. R has some handy built-in functions for this:
+Our goal is to generate a plot showing the mean of our data as a point, with error bars displaying a 95% confidence interval. A 95% confidence interval defines a range of values that you can be 95% certain contains the population mean. 
 
-myMean<-mean(x=sampleData) #where sampledata is your series of measurements
+There's a function in R called "summarySE" that can generate the data we need for this plot. Here's the basic structure:
 
-mySD<-sd(x=sampleData) #where sampleData is your series of measurements
+myStats<-summarySE(data=myData, measurevar="MyColumnName", conf.interval = 0.95)
 
-myN<-n()
+where myData is your data frame, "MyColumnName" is the name of the column to measure, and conf.interval is the percent confidence interval you want to compute. 
 
-Below, create one variable each for the mean and standard deviation of your data:
+Adapt the summarySE command to your data, and run and print it below:
 
 ```{r}
-#Mean:
+# assign a variable to the summarySE function as described above:
 
 
-#Standard Deviation
+# print the variable:
 
 ```
 
 
-We can use these metrics to generate a 95% confidence interval. A 95% confidence interval defines a range of values that you can be 95% certain contains the population mean. There's a handy function in R called groupwiseMean that helps generate the values you need for your confidence interval: 
 
-myStats<-groupwiseMean(ColumnName ~ 1,
-              data   = myData,
-              conf   = 0.95,
-              digits = 3)
+This function generates a new data frame with the calculated statistics mean (the column name will match "MyColumnName"), standard deviation (sd), standard error (se), and confidence interval (ci). In order to get and use this data, you'll need to create new variables. You can do this by using the "$" operator, which lets you specify a specific column within a dataframe. For example, if your data frame is named myStats, and you want to get the "ci" data, your variable would look like this:
 
-In the example above, you'll want to replace "ColumnName" with the literal name of your column, and "myData" with the variable containing your entire data set. Run this command below, and print out the result:
+myCI<-myStats$ci
+
+Below, create variables for the mean, ci, and the upper and lower limits of the confidence interval (hint: the upper limit is the mean+ci, lower is mean-ci)
 
 
 ```{r}
+# create variable for the mean
 
-# create a variable, and asign it to the "groupwise" function like above
+# create variable for the ci value
 
+# create variabel for ci upper limit
 
-# print it out
+# create variabel for ci lower limit
 
 
 ```
 
-
-You'll see that the result is a new data frame with three key pieces of information:
-
-* Mean
-* Trad.lower   
-* Trad.upper
-
-Trad.lower and Trad.upper are the lower and upper limits of the 95% confidence interval, respectively. 
-You'll need to create new variables that get the values for those columns for later use in creating your plot. You can do this by using the "$" operator, which lets you specify a specific column within a dataframe. For example, if your data frame is named myStats, you can get the mean by doing the following:
-
-myMean<-myStats$Mean
-
-Use this technique to create variables for the mean, 95% CI upper limit, and 95% CI lower limit:
-
-```{r}
-
-
-
-
-```
 
 
 Now we have the data needed to create a plot. Beginning with the lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. 
 
 
-
+**** MORE GGPLOT STUFF HERE *****
 
 
 
 ```{r}
 
-myMean<-mean(x=myData$Measurement)
 
-x<-groupwiseMean(Measurement ~ 1,
-              data   = myData,
-              conf   = 0.95,
-              digits = 3)
-x
-lower<-x$Trad.lower
-upper<-x$Trad.upper
 
 ggplot(data=myData, mapping=aes(y=myMean, x="name of group"))+geom_point()+geom_errorbar(mapping=aes(ymin=lower, ymax=upper), width=0.1)+ylim(0,10)+labs(title="my title", x="my x label", y="my y axis label")
 
@@ -177,30 +135,6 @@ ggplot(data=myData, mapping=aes(y=myMean, x="name of group"))+geom_point()+geom_
 
 
 
-```{r}
-
-
-  
-  #Standard Deviation:
-mySD<-sd(x=myData$Measurement)
-
-myMean
-mySD
-
-x<-groupwiseMean(Measurement ~ 1,
-              data   = myData,
-              conf   = 0.95,
-              digits = 3)
-x
-lower<-x$Trad.lower
-upper<-x$Trad.upper
-
-
-plot <- ggplot(data = myData, mapping=aes(y=Measurement, x="Name of Group")) + geom_point( middle=myMean)+ geom_errorbar(mapping=aes(ymin=lower, ymax=upper,  color="red"))
-plot
-
-
-```
 
 
 
