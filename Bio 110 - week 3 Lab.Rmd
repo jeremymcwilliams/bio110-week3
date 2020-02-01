@@ -9,8 +9,6 @@ output:
 # Lab 3 - Using Digital Microscopy to measure Chlamydomonas flagella
 
 
-Might be a good resource or model: http://www.stat.ucla.edu/~rgould/110as02/bsci
-
 The goals of this tutorial are to:
 * learn how to import data in a spreadsheet to R Studio
 * calculate the mean of your measured flagella lengths
@@ -39,6 +37,7 @@ Before writing any R code, we'll need to load some R packages in order to use so
 ```{r}
 
 library(readr)
+library(dplyr)
 library(Rmisc)
 library(ggplot2)
 library(rcompanion)
@@ -54,33 +53,21 @@ NOTE!! data below is just for testing....will remove it (and this sentence) when
 ```{r}
 # for example:
 # myData<-read_csv("myData.csv")
-mydata<-read_csv("test1.csv")
+myData<-read_csv("test1.csv")
 
 
 # confirm by printing your variable
 # myData
-mydata
+myData
 
 
 ```
 
 
-Next, you'll want to create a new variable that just has the column data of your measurements. You can do this with this syntax:
-
-myColumn<-datasetVariable$columnName
-
-So if your data frame variable is "myData", and your column header is "Measurements", then it would look like this (the variable name "sampleData" is completely arbitrary):
-
-sampleData<-myData$Measurements
 
 ```{r}
 # create a new variable with your measurement column data, and print it out to ensure it worked. 
 
-sampledata<-mydata$Measurement
-
-sampledata
-str(sampledata)
-summary(sampledata)
 
 
 #just to test!
@@ -92,7 +79,128 @@ summary(sampledata)
 ```
 
 
+REVIEWERS! There are two options for 
 
+## Generating statistics for plots
+
+Now we can determine some basic statistics from that data, like mean and standard deviation. R has some handy built-in functions for this:
+
+myMean<-mean(x=sampleData) #where sampledata is your series of measurements
+
+mySD<-sd(x=sampleData) #where sampleData is your series of measurements
+
+myN<-n()
+
+Below, create one variable each for the mean and standard deviation of your data:
+
+```{r}
+#Mean:
+
+
+#Standard Deviation
+
+```
+
+
+We can use these metrics to generate a 95% confidence interval. A 95% confidence interval defines a range of values that you can be 95% certain contains the population mean. There's a handy function in R called groupwiseMean that helps generate the values you need for your confidence interval: 
+
+myStats<-groupwiseMean(ColumnName ~ 1,
+              data   = myData,
+              conf   = 0.95,
+              digits = 3)
+
+In the example above, you'll want to replace "ColumnName" with the literal name of your column, and "myData" with the variable containing your entire data set. Run this command below, and print out the result:
+
+
+```{r}
+
+# create a variable, and asign it to the "groupwise" function like above
+
+
+# print it out
+
+
+```
+
+
+You'll see that the result is a new data frame with three key pieces of information:
+
+* Mean
+* Trad.lower   
+* Trad.upper
+
+Trad.lower and Trad.upper are the lower and upper limits of the 95% confidence interval, respectively. 
+You'll need to create new variables that get the values for those columns for later use in creating your plot. You can do this by using the "$" operator, which lets you specify a specific column within a dataframe. For example, if your data frame is named myStats, you can get the mean by doing the following:
+
+myMean<-myStats$Mean
+
+Use this technique to create variables for the mean, 95% CI upper limit, and 95% CI lower limit:
+
+```{r}
+
+
+
+
+```
+
+
+Now we have the data needed to create a plot. Beginning with the lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. 
+
+
+
+
+
+
+```{r}
+
+myMean<-mean(x=myData$Measurement)
+
+x<-groupwiseMean(Measurement ~ 1,
+              data   = myData,
+              conf   = 0.95,
+              digits = 3)
+x
+lower<-x$Trad.lower
+upper<-x$Trad.upper
+
+ggplot(data=myData, mapping=aes(y=myMean, x="name of group"))+geom_point()+geom_errorbar(mapping=aes(ymin=lower, ymax=upper), width=0.1)+ylim(0,10)+labs(title="my title", x="my x label", y="my y axis label")
+
+
+
+
+
+
+```
+
+
+
+
+
+
+```{r}
+
+
+  
+  #Standard Deviation:
+mySD<-sd(x=myData$Measurement)
+
+myMean
+mySD
+
+x<-groupwiseMean(Measurement ~ 1,
+              data   = myData,
+              conf   = 0.95,
+              digits = 3)
+x
+lower<-x$Trad.lower
+upper<-x$Trad.upper
+
+
+plot <- ggplot(data = myData, mapping=aes(y=Measurement, x="Name of Group")) + geom_point( middle=myMean)+ geom_errorbar(mapping=aes(ymin=lower, ymax=upper,  color="red"))
+plot
+
+
+```
 
 
 
