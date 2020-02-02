@@ -100,16 +100,16 @@ Below, create variables for the mean, ci, and the upper and lower limits of the 
 
 # create variable for the ci value
 
-# create variabel for ci upper limit
+# create variable for ci upper limit
 
-# create variabel for ci lower limit
+# create variable for ci lower limit
 
 
 ```
 
 ## Plots with ggplot
 
-Now we have the data needed to create a plot. Beginning with the lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. We're likely going to use ggplot for the remainder of the labs this semester.
+Now we have the data needed to create a plot. Beginning with this lab, we're going to be using "ggplot", which is a very popular library for creating data visualizations in R. We're likely going to use ggplot for the remainder of the labs this semester.
 
 The "gg" translates to "grammar of graphics", and is founded in the idea that all data visualizations are comprised of three components:
 
@@ -124,7 +124,7 @@ ggplot(data=myData, mapping=aes(x=someValue, y=anotherValue))+geom_point()
 In the code above, the three components are represented as such:
 
 * data set is "myData", typically a variable representing a data frame
-* aesthetics (mapping=aes(...)) refers to the points or data that appear. The values in the aes portion can vary depending upon the type of plot you create (refer to the ggplot2-cheatsheet.pdf in the files section for more info). x and y could be a single point or variabel, refer to a column of data, or could be text.
+* aesthetics (mapping=aes(...)) refers to the points or data that appear. The values in the aes portion can vary depending upon the type of plot you create (refer to the ggplot2-cheatsheet.pdf in the files section for more info). x and y could be a single point or variable, refer to a column of data, or could be text.
 * the geom, or type of plot, is represented by "geom_point()". Each type of plot has a different function (e.g. geom_bar(), geom_line(), etc.).
 
 Notice that "geom_point()" is proceeded with a "+". The "+" is part of the ggplot syntax, and is a way to "chain" functions together. We'll do more of this soon to add more components to the plot. 
@@ -147,7 +147,7 @@ You'll notice that the y-axis has an auto-generated range. Let's explicitly defi
 
 ```
 
-Now let's add the error bars representign the 95% confidence interval. It's the same code you just wrote, plus chaining the geom_errorbar() function. Since the error bar is "stuff that you see", you use the same "mapping=aes(...)" syntax as in the ggplot() function. In this case, it would look like:
+Now let's add the error bars representing the 95% confidence interval. It's the same code you just wrote, plus chaining the geom_errorbar() function. Since the error bar is "stuff that you see", you use the same "mapping=aes(...)" syntax as in the ggplot() function. In this case, it would look like:
 
 geom_errorbar(mapping=aes(ymin=minValue, ymax=maxValue))
 
@@ -180,5 +180,5 @@ Chain this to your code, and run it below:
 
 
 
-Make sure you copy your image and email it to your instructor.
+Make sure you copy and save your plot and print it with a detailed caption to turn in to your instructor.
 
