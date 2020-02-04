@@ -1752,20 +1752,146 @@ summary {
 <!-- rnb-text-begin -->
 <div id="lab-3---using-digital-microscopy-to-measure-chlamydomonas-flagella" class="section level1">
 <h1>Lab 3 - Using Digital Microscopy to measure Chlamydomonas flagella</h1>
-<p>Might be a good resource or model: <a href="http://www.stat.ucla.edu/~rgould/110as02/bsci" class="uri">http://www.stat.ucla.edu/~rgould/110as02/bsci</a></p>
-<p>The goals of this tutorial are to: - learn how to import data in a spreadsheet to R Studio - calculate the mean of your measured flagella lengths - calculate the 95% confidence intervals of the mean flagella length - plot the mean as a point with error bars on a graph</p>
+<p>The goals of this tutorial are to: * learn how to import data in a spreadsheet to R Studio * calculate the mean of your measured flagella lengths * calculate the 95% confidence intervals of the mean flagella length * plot the mean as a point with error bars on a graph</p>
 <p>Now that you have collected measurements for 10 Chlamydomonas flagella, you must import your spreadsheet of data to R Studio. The format of the columns of data is important, as well as the titles of the columns of data.</p>
 <p>Before you move on and discover how to load your data into R, it might be useful to go over the following checklist that will make it easier to import the data correctly into R:</p>
-<p>With spreadsheets, the first row is usually reserved for the header, while the first column is used to identify the sampling unit; - Avoid names, values or fields with blank spaces, otherwise each word will be interpreted as a separate variable, resulting in errors that are related to the number of elements per line in your data set; - If you want to concatenate words, inserting a . in between to words instead of a space; - Short names are prefered over longer names; - Try to avoid using names that contain symbols such as ?, $,%, ^, &amp;, *, (, ),-,#, ?,,,&lt;,&gt;, /, |, , [ ,] ,{, and }; - Delete any comments that you have made in your Excel file to avoid extra columns or NA’s to be added to your file - Make sure that any missing values in your data set are indicated with NA.</p>
+<p>With spreadsheets, the first row is usually reserved for the header, while the first column is used to identify the sampling unit; - Avoid names, values or fields with blank spaces, otherwise each word will be interpreted as a separate variable, resulting in errors that are related to the number of elements per line in your data set; - If you want to concatenate words, inserting a . in between two words instead of a space; - Short names are prefered over longer names; - Try to avoid using names that contain symbols such as ?, $,%, ^, &amp;, *, (, ),-,#, ?,,,&lt;,&gt;, /, |, , [ ,] ,{, and }; - Delete any comments that you have made in your Excel file to avoid extra columns or NA’s to be added to your file - Make sure that any missing values in your data set are indicated with NA.</p>
 <p>Once you have checked that your spreadsheet follows these basic rules, save it as a .csv file in a BIO 110 folder on the desktop.</p>
-<p>First you must upload your .csv file to R Studio in the bottom right window using the Upload button. Browse to locate your file and click Upload.<br />
-#Should upload to home or bio110-week3?</p>
-<p>#That’s all I have time for now.<br />
-<a href="https://rcompanion.org/handbook/C_03.html" class="uri">https://rcompanion.org/handbook/C_03.html</a> This stats site and its companion R handbook are Greg’s favorites. I thought it might help with finding the code we need.</p>
+<p>First you must upload your .csv file to R Studio in the bottom right window using the Upload button. Browse to locate your file and click Upload. Make sure it’s loaded into the bio110-week3 folder.</p>
+<p>Before writing any R code, we’ll need to load some R packages in order to use some of the specific functions we want. Run the code chunk below to make sure these functions are available to your environement:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5saWJyYXJ5KHJlYWRyKVxubGlicmFyeShkcGx5cilcbmxpYnJhcnkoUm1pc2MpXG5saWJyYXJ5KGdncGxvdDIpXG5saWJyYXJ5KHJjb21wYW5pb24pXG5cblxuYGBgIn0= -->
+<pre class="r"><code>
+library(readr)
+library(dplyr)
+library(Rmisc)
+library(ggplot2)
+library(rcompanion)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now you’ll want to load your data as a data frame into R by assigning it to a variable:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBmb3IgZXhhbXBsZSxjb3B5IGFuZCBwYXN0ZSB0aGUgZm9sbG93aW5nIGNvbW1hbmQgYmVsb3csIHVzaW5nIHlvdXIgLmNzdiBmaWxlIG5hbWUgaW4gXCJcIjpcbiMgbXlEYXRhPC1yZWFkX2NzdihcIm15RGF0YS5jc3ZcIilcblxuXG5cbiMgY29uZmlybSBieSBwcmludGluZyB5b3VyIHZhcmlhYmxlXG5cblxuXG5gYGAifQ== -->
+<pre class="r"><code># for example,copy and paste the following command below, using your .csv file name in &quot;&quot;:
+# myData&lt;-read_csv(&quot;myData.csv&quot;)
+
+
+
+# confirm by printing your variable
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="generating-statistics-for-plots" class="section level2">
+<h2>Generating statistics for plots</h2>
+<p>Our goal is to generate a plot showing the mean of our data as a point, with error bars displaying a 95% confidence interval. A 95% confidence interval defines a range of values that you can be 95% certain contains the population mean.</p>
+<p>There’s a function in R called “summarySE” that can generate the data we need for this plot. Here’s the basic structure:</p>
+<p>myStats&lt;-summarySE(data=myData, measurevar=“MyColumnName”, conf.interval = 0.95)</p>
+<p>where myData is your data frame, “MyColumnName” is the name of the column to measure, and conf.interval is the percent confidence interval you want to compute.</p>
+<p>Adapt the summarySE command to your data, and run and print it below:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBhc3NpZ24gYSB2YXJpYWJsZSB0byB0aGUgc3VtbWFyeVNFIGZ1bmN0aW9uIGFzIGRlc2NyaWJlZCBieSBjb3B5aW5nIHRoZSBjb2RlIGFib3ZlIGFuZCBwYXN0aW5nIGl0IGJlbG93LCBjaGFuZ2luZyBhbnkgbmFtZXMgdG8gbWF0Y2ggeW91ciBkYXRhOlxuXG5cbiMgcHJpbnQgdGhlIHZhcmlhYmxlOlxuXG5gYGAifQ== -->
+<pre class="r"><code># assign a variable to the summarySE function as described by copying the code above and pasting it below, changing any names to match your data:
+
+
+# print the variable:
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>This function generates a new data frame with the calculated statistics mean (the column name will match “MyColumnName”), standard deviation (sd), standard error (se), and confidence interval (ci). In order to get and use this data, you’ll need to create new variables. You can do this by using the “$” operator, which lets you specify a specific column within a dataframe. For example, if your data frame is named myStats, and you want to get the “ci” data, your variable would look like this:</p>
+<p>myCI&lt;-myStats$ci</p>
+<p>Below, create variables for the mean, ci, and the upper and lower limits of the confidence interval (hint: call the upper limit ymax and define it as the mean+ci, call the lower limit ymin and define it as the mean-ci)</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjcmVhdGUgdmFyaWFibGUgZm9yIHRoZSBtZWFuXG5cbiMgY3JlYXRlIHZhcmlhYmxlIGZvciB0aGUgY2kgdmFsdWVcblxuIyBjcmVhdGUgdmFyaWFibGUgZm9yIGNpIHVwcGVyIGxpbWl0XG5cbiMgY3JlYXRlIHZhcmlhYmxlIGZvciBjaSBsb3dlciBsaW1pdFxuXG5cbmBgYCJ9 -->
+<pre class="r"><code># create variable for the mean
+
+# create variable for the ci value
+
+# create variable for ci upper limit
+
+# create variable for ci lower limit
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+</div>
+<div id="plots-with-ggplot" class="section level2">
+<h2>Plots with ggplot</h2>
+<p>Now we have the data needed to create a plot. Beginning with this lab, we’re going to be using “ggplot”, which is a very popular library for creating data visualizations in R. We’re likely going to use ggplot for the remainder of the labs this semester.</p>
+<p>The “gg” translates to “grammar of graphics”, and is founded in the idea that all data visualizations are comprised of three components:</p>
+<ul>
+<li>data set</li>
+<li>aesthetics, or visual marks that represent the data (i.e. the stuff that you see)</li>
+<li>geometric objects, or “geoms” (e.g the type of plot)</li>
+</ul>
+<p>Let’s first look at the basic structure of ggplot code:</p>
+<p>ggplot(data=myData, mapping=aes(x=someValue, y=anotherValue))+geom_point()</p>
+<p>In the code above, the three components are represented as such:</p>
+<ul>
+<li>data set is “myData”, typically a variable representing a data frame</li>
+<li>aesthetics (mapping=aes(…)) refers to the points or data that appear. The values in the aes portion can vary depending upon the type of plot you create (refer to the ggplot2-cheatsheet.pdf in the files section for more info). x and y could be a single point or variable, refer to a column of data, or could be text.</li>
+<li>the geom, or type of plot, is represented by “geom_point()”. Each type of plot has a different function (e.g. geom_bar(), geom_line(), etc.).</li>
+</ul>
+<p>Notice that “geom_point()” is proceeded with a “+”. The “+” is part of the ggplot syntax, and is a way to “chain” functions together. We’ll do more of this soon to add more components to the plot.</p>
+<p>Start off by creating a plot using the code sample above. Make sure you use your variable for the data frame in the “data=” portion, use your mean variable for the y-value, and set the x-value equal to some descriptive text (since it’s text, make sure you use quotes) or you can have empty &quot;&quot; to leave the x-axis unlabeled.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGNvcHkgdGhlIGdncGxvdCBjb2RlIGZyb20gYWJvdmUgYW5kIGFkYXB0IGFzIG5lZWRlZCBmb3IgeW91ciBkYXRhOlxuXG5cblxuYGBgIn0= -->
+<pre class="r"><code>
+# copy the ggplot code from above and adapt as needed for your data:
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>You’ll notice that the y-axis has an auto-generated range. Let’s explicitly define our range by chaining the “ylim” function to the end of our plot. ylim takes an ordered pair, representing the minimum and maximim y-axis values (e.g. ylim(0,100)). Make sure you start with 0, and use a reasonable value for the max.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyByZWRvIHlvdXIgcGxvdCBieSBjb3B5aW5nIGFuZCBwYXN0aW5nIHlvdXIgcHJldmlvdXMgY29kZSBiZWxvdywgYW5kIGNoYWluIFwieWxpbVwiIHRvIHRoZSBlbmRcblxuXG5gYGAifQ== -->
+<pre class="r"><code># redo your plot by copying and pasting your previous code below, and chain &quot;ylim&quot; to the end
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Now let’s add the error bars representing the 95% confidence interval. It’s the same code you just wrote, plus chaining the geom_errorbar() function. Since the error bar is “stuff that you see”, you use the same “mapping=aes(…)” syntax as in the ggplot() function. In this case, it would look like:</p>
+<p>geom_errorbar(mapping=aes(ymin=minValue, ymax=maxValue))</p>
+<p>You can also adjust the width of your errorbar like this:</p>
+<p>geom_errorbar(mapping=aes(ymin=minValue, ymax=maxValue), width=0.5)</p>
+<p>Below, chain this function on to your plot code, and use your confidence interval min &amp; max for the ymin and ymax values. Play around with different values for “width”, until it seems ok to you:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIHBhc3RlIHlvdXIgcGxvdCBjb2RlIGJlbG93LCBhZGRpbmcgdGhlIGdlb21fZXJyb3JiYXIoKSBmdW5jdGlvbiBzaG93biBhYm92ZVxuXG5cbmBgYCJ9 -->
+<pre class="r"><code>
+# paste your plot code below, adding the geom_errorbar() function shown above
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Finally, you can add custom labels by chaining the labs() function to your ggplot code. The syntax is:</p>
+<p>labs(title=“my title”, x=“my x label”, y=“my y axis label”)</p>
+<p>Today, you can omit the title and leave the x label empty &quot;&quot; since you will write a figure title and caption to add to your plot later.</p>
+<p>Chain this to your code, and run it below:</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG4jIGZpbmFsIHBsb3QsIGNoYWluaW5nIHRoZSBsYWJzKCkgZnVuY3Rpb246XG5cblxuYGBgIn0= -->
+<pre class="r"><code>
+# final plot, chaining the labs() function:
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>Make sure you copy and save your plot and print it with a detailed caption to turn in to your instructor.</p>
 <!-- rnb-text-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">Ci0tLQp0aXRsZTogIkJpbyAxMTAgV2VlayAzIgpvdXRwdXQ6CiAgcGRmX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgTGFiIDMgLSBVc2luZyBEaWdpdGFsIE1pY3Jvc2NvcHkgdG8gbWVhc3VyZSBDaGxhbXlkb21vbmFzIGZsYWdlbGxhCgoKTWlnaHQgYmUgYSBnb29kIHJlc291cmNlIG9yIG1vZGVsOiBodHRwOi8vd3d3LnN0YXQudWNsYS5lZHUvfnJnb3VsZC8xMTBhczAyL2JzY2kKClRoZSBnb2FscyBvZiB0aGlzIHR1dG9yaWFsIGFyZSB0bzoKLSBsZWFybiBob3cgdG8gaW1wb3J0IGRhdGEgaW4gYSBzcHJlYWRzaGVldCB0byBSIFN0dWRpbwotIGNhbGN1bGF0ZSB0aGUgbWVhbiBvZiB5b3VyIG1lYXN1cmVkIGZsYWdlbGxhIGxlbmd0aHMKLSBjYWxjdWxhdGUgdGhlIDk1JSBjb25maWRlbmNlIGludGVydmFscyBvZiB0aGUgbWVhbiBmbGFnZWxsYSBsZW5ndGgKLSBwbG90IHRoZSBtZWFuIGFzIGEgcG9pbnQgd2l0aCBlcnJvciBiYXJzIG9uIGEgZ3JhcGgKCk5vdyB0aGF0IHlvdSBoYXZlIGNvbGxlY3RlZCBtZWFzdXJlbWVudHMgZm9yIDEwIENobGFteWRvbW9uYXMgZmxhZ2VsbGEsIHlvdSBtdXN0IGltcG9ydCB5b3VyIHNwcmVhZHNoZWV0IG9mIGRhdGEgdG8gUiBTdHVkaW8uIFRoZSBmb3JtYXQgb2YgdGhlIGNvbHVtbnMgb2YgZGF0YSBpcyBpbXBvcnRhbnQsIGFzIHdlbGwgYXMgdGhlIHRpdGxlcyBvZiB0aGUgY29sdW1ucyBvZiBkYXRhLiAKCkJlZm9yZSB5b3UgbW92ZSBvbiBhbmQgZGlzY292ZXIgaG93IHRvIGxvYWQgeW91ciBkYXRhIGludG8gUiwgaXQgbWlnaHQgYmUgdXNlZnVsIHRvIGdvIG92ZXIgdGhlIGZvbGxvd2luZyBjaGVja2xpc3QgdGhhdCB3aWxsIG1ha2UgaXQgZWFzaWVyIHRvIGltcG9ydCB0aGUgZGF0YSBjb3JyZWN0bHkgaW50byBSOgoKV2l0aCBzcHJlYWRzaGVldHMsIHRoZSBmaXJzdCByb3cgaXMgdXN1YWxseSByZXNlcnZlZCBmb3IgdGhlIGhlYWRlciwgd2hpbGUgdGhlIGZpcnN0IGNvbHVtbiBpcyB1c2VkIHRvIGlkZW50aWZ5IHRoZSBzYW1wbGluZyB1bml0OwotIEF2b2lkIG5hbWVzLCB2YWx1ZXMgb3IgZmllbGRzIHdpdGggYmxhbmsgc3BhY2VzLCBvdGhlcndpc2UgZWFjaCB3b3JkIHdpbGwgYmUgaW50ZXJwcmV0ZWQgYXMgYSBzZXBhcmF0ZSB2YXJpYWJsZSwgcmVzdWx0aW5nIGluIGVycm9ycyB0aGF0IGFyZSByZWxhdGVkIHRvIHRoZSBudW1iZXIgb2YgZWxlbWVudHMgcGVyIGxpbmUgaW4geW91ciBkYXRhIHNldDsKLSBJZiB5b3Ugd2FudCB0byBjb25jYXRlbmF0ZSB3b3JkcywgaW5zZXJ0aW5nIGEgLiBpbiBiZXR3ZWVuIHRvIHdvcmRzIGluc3RlYWQgb2YgYSBzcGFjZTsKLSBTaG9ydCBuYW1lcyBhcmUgcHJlZmVyZWQgb3ZlciBsb25nZXIgbmFtZXM7Ci0gVHJ5IHRvIGF2b2lkIHVzaW5nIG5hbWVzIHRoYXQgY29udGFpbiBzeW1ib2xzIHN1Y2ggYXMgPywgJCwlLCBeLCAmLCAqLCAoLCApLC0sIywgPywsLDwsPiwgLywgfCwgXCwgWyAsXSAseywgYW5kIH07Ci0gRGVsZXRlIGFueSBjb21tZW50cyB0aGF0IHlvdSBoYXZlIG1hZGUgaW4geW91ciBFeGNlbCBmaWxlIHRvIGF2b2lkIGV4dHJhIGNvbHVtbnMgb3IgTkHigJlzIHRvIGJlIGFkZGVkIHRvIHlvdXIgZmlsZQotIE1ha2Ugc3VyZSB0aGF0IGFueSBtaXNzaW5nIHZhbHVlcyBpbiB5b3VyIGRhdGEgc2V0IGFyZSBpbmRpY2F0ZWQgd2l0aCBOQS4KCgpPbmNlIHlvdSBoYXZlIGNoZWNrZWQgdGhhdCB5b3VyIHNwcmVhZHNoZWV0IGZvbGxvd3MgdGhlc2UgYmFzaWMgcnVsZXMsIHNhdmUgaXQgYXMgYSAuY3N2IGZpbGUgaW4gYSBCSU8gMTEwIGZvbGRlciBvbiB0aGUgZGVza3RvcC4gIAoKRmlyc3QgeW91IG11c3QgdXBsb2FkIHlvdXIgLmNzdiBmaWxlIHRvIFIgU3R1ZGlvIGluIHRoZSBib3R0b20gcmlnaHQgd2luZG93IHVzaW5nIHRoZSBVcGxvYWQgYnV0dG9uLiAgQnJvd3NlIHRvIGxvY2F0ZSB5b3VyIGZpbGUgYW5kIGNsaWNrIFVwbG9hZC4gIAojU2hvdWxkIHVwbG9hZCB0byBob21lIG9yIGJpbzExMC13ZWVrMz8gCgojVGhhdCdzIGFsbCBJIGhhdmUgdGltZSBmb3Igbm93LiAgCmh0dHBzOi8vcmNvbXBhbmlvbi5vcmcvaGFuZGJvb2svQ18wMy5odG1sClRoaXMgc3RhdHMgc2l0ZSBhbmQgaXRzIGNvbXBhbmlvbiBSIGhhbmRib29rIGFyZSBHcmVnJ3MgZmF2b3JpdGVzLiAgSSB0aG91Z2h0IGl0IG1pZ2h0IGhlbHAgd2l0aCBmaW5kaW5nIHRoZSBjb2RlIHdlIG5lZWQuCgo=</div>
+<div id="rmd-source-code">Ci0tLQp0aXRsZTogIkJpbyAxMTAgV2VlayAzIgpvdXRwdXQ6CiAgcGRmX2RvY3VtZW50OiBkZWZhdWx0CiAgaHRtbF9ub3RlYm9vazogZGVmYXVsdAotLS0KCiMgTGFiIDMgLSBVc2luZyBEaWdpdGFsIE1pY3Jvc2NvcHkgdG8gbWVhc3VyZSBDaGxhbXlkb21vbmFzIGZsYWdlbGxhCgoKVGhlIGdvYWxzIG9mIHRoaXMgdHV0b3JpYWwgYXJlIHRvOgoqIGxlYXJuIGhvdyB0byBpbXBvcnQgZGF0YSBpbiBhIHNwcmVhZHNoZWV0IHRvIFIgU3R1ZGlvCiogY2FsY3VsYXRlIHRoZSBtZWFuIG9mIHlvdXIgbWVhc3VyZWQgZmxhZ2VsbGEgbGVuZ3RocwoqIGNhbGN1bGF0ZSB0aGUgOTUlIGNvbmZpZGVuY2UgaW50ZXJ2YWxzIG9mIHRoZSBtZWFuIGZsYWdlbGxhIGxlbmd0aAoqIHBsb3QgdGhlIG1lYW4gYXMgYSBwb2ludCB3aXRoIGVycm9yIGJhcnMgb24gYSBncmFwaAoKTm93IHRoYXQgeW91IGhhdmUgY29sbGVjdGVkIG1lYXN1cmVtZW50cyBmb3IgMTAgQ2hsYW15ZG9tb25hcyBmbGFnZWxsYSwgeW91IG11c3QgaW1wb3J0IHlvdXIgc3ByZWFkc2hlZXQgb2YgZGF0YSB0byBSIFN0dWRpby4gVGhlIGZvcm1hdCBvZiB0aGUgY29sdW1ucyBvZiBkYXRhIGlzIGltcG9ydGFudCwgYXMgd2VsbCBhcyB0aGUgdGl0bGVzIG9mIHRoZSBjb2x1bW5zIG9mIGRhdGEuIAoKQmVmb3JlIHlvdSBtb3ZlIG9uIGFuZCBkaXNjb3ZlciBob3cgdG8gbG9hZCB5b3VyIGRhdGEgaW50byBSLCBpdCBtaWdodCBiZSB1c2VmdWwgdG8gZ28gb3ZlciB0aGUgZm9sbG93aW5nIGNoZWNrbGlzdCB0aGF0IHdpbGwgbWFrZSBpdCBlYXNpZXIgdG8gaW1wb3J0IHRoZSBkYXRhIGNvcnJlY3RseSBpbnRvIFI6CgpXaXRoIHNwcmVhZHNoZWV0cywgdGhlIGZpcnN0IHJvdyBpcyB1c3VhbGx5IHJlc2VydmVkIGZvciB0aGUgaGVhZGVyLCB3aGlsZSB0aGUgZmlyc3QgY29sdW1uIGlzIHVzZWQgdG8gaWRlbnRpZnkgdGhlIHNhbXBsaW5nIHVuaXQ7Ci0gQXZvaWQgbmFtZXMsIHZhbHVlcyBvciBmaWVsZHMgd2l0aCBibGFuayBzcGFjZXMsIG90aGVyd2lzZSBlYWNoIHdvcmQgd2lsbCBiZSBpbnRlcnByZXRlZCBhcyBhIHNlcGFyYXRlIHZhcmlhYmxlLCByZXN1bHRpbmcgaW4gZXJyb3JzIHRoYXQgYXJlIHJlbGF0ZWQgdG8gdGhlIG51bWJlciBvZiBlbGVtZW50cyBwZXIgbGluZSBpbiB5b3VyIGRhdGEgc2V0OwotIElmIHlvdSB3YW50IHRvIGNvbmNhdGVuYXRlIHdvcmRzLCBpbnNlcnRpbmcgYSAuIGluIGJldHdlZW4gdHdvIHdvcmRzIGluc3RlYWQgb2YgYSBzcGFjZTsKLSBTaG9ydCBuYW1lcyBhcmUgcHJlZmVyZWQgb3ZlciBsb25nZXIgbmFtZXM7Ci0gVHJ5IHRvIGF2b2lkIHVzaW5nIG5hbWVzIHRoYXQgY29udGFpbiBzeW1ib2xzIHN1Y2ggYXMgPywgJCwlLCBeLCAmLCAqLCAoLCApLC0sIywgPywsLDwsPiwgLywgfCwgXCwgWyAsXSAseywgYW5kIH07Ci0gRGVsZXRlIGFueSBjb21tZW50cyB0aGF0IHlvdSBoYXZlIG1hZGUgaW4geW91ciBFeGNlbCBmaWxlIHRvIGF2b2lkIGV4dHJhIGNvbHVtbnMgb3IgTkHigJlzIHRvIGJlIGFkZGVkIHRvIHlvdXIgZmlsZQotIE1ha2Ugc3VyZSB0aGF0IGFueSBtaXNzaW5nIHZhbHVlcyBpbiB5b3VyIGRhdGEgc2V0IGFyZSBpbmRpY2F0ZWQgd2l0aCBOQS4KCgpPbmNlIHlvdSBoYXZlIGNoZWNrZWQgdGhhdCB5b3VyIHNwcmVhZHNoZWV0IGZvbGxvd3MgdGhlc2UgYmFzaWMgcnVsZXMsIHNhdmUgaXQgYXMgYSAuY3N2IGZpbGUgaW4gYSBCSU8gMTEwIGZvbGRlciBvbiB0aGUgZGVza3RvcC4gIAoKRmlyc3QgeW91IG11c3QgdXBsb2FkIHlvdXIgLmNzdiBmaWxlIHRvIFIgU3R1ZGlvIGluIHRoZSBib3R0b20gcmlnaHQgd2luZG93IHVzaW5nIHRoZSBVcGxvYWQgYnV0dG9uLiAgQnJvd3NlIHRvIGxvY2F0ZSB5b3VyIGZpbGUgYW5kIGNsaWNrIFVwbG9hZC4gIE1ha2Ugc3VyZSBpdCdzIGxvYWRlZCBpbnRvIHRoZSBiaW8xMTAtd2VlazMgZm9sZGVyLgoKQmVmb3JlIHdyaXRpbmcgYW55IFIgY29kZSwgd2UnbGwgbmVlZCB0byBsb2FkIHNvbWUgUiBwYWNrYWdlcyBpbiBvcmRlciB0byB1c2Ugc29tZSBvZiB0aGUgc3BlY2lmaWMgZnVuY3Rpb25zIHdlIHdhbnQuIFJ1biB0aGUgY29kZSBjaHVuayBiZWxvdyB0byBtYWtlIHN1cmUgdGhlc2UgZnVuY3Rpb25zIGFyZSBhdmFpbGFibGUgdG8geW91ciBlbnZpcm9uZW1lbnQ6CgpgYGB7cn0KCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoZHBseXIpCmxpYnJhcnkoUm1pc2MpCmxpYnJhcnkoZ2dwbG90MikKbGlicmFyeShyY29tcGFuaW9uKQoKCmBgYAogCgpOb3cgeW91J2xsIHdhbnQgdG8gbG9hZCB5b3VyIGRhdGEgYXMgYSBkYXRhIGZyYW1lIGludG8gUiBieSBhc3NpZ25pbmcgaXQgdG8gYSB2YXJpYWJsZToKCgoKYGBge3J9CiMgZm9yIGV4YW1wbGUsY29weSBhbmQgcGFzdGUgdGhlIGZvbGxvd2luZyBjb21tYW5kIGJlbG93LCB1c2luZyB5b3VyIC5jc3YgZmlsZSBuYW1lIGluICIiOgojIG15RGF0YTwtcmVhZF9jc3YoIm15RGF0YS5jc3YiKQoKCgojIGNvbmZpcm0gYnkgcHJpbnRpbmcgeW91ciB2YXJpYWJsZQoKCgpgYGAKCgoKCgojIyBHZW5lcmF0aW5nIHN0YXRpc3RpY3MgZm9yIHBsb3RzCgpPdXIgZ29hbCBpcyB0byBnZW5lcmF0ZSBhIHBsb3Qgc2hvd2luZyB0aGUgbWVhbiBvZiBvdXIgZGF0YSBhcyBhIHBvaW50LCB3aXRoIGVycm9yIGJhcnMgZGlzcGxheWluZyBhIDk1JSBjb25maWRlbmNlIGludGVydmFsLiBBIDk1JSBjb25maWRlbmNlIGludGVydmFsIGRlZmluZXMgYSByYW5nZSBvZiB2YWx1ZXMgdGhhdCB5b3UgY2FuIGJlIDk1JSBjZXJ0YWluIGNvbnRhaW5zIHRoZSBwb3B1bGF0aW9uIG1lYW4uIAoKVGhlcmUncyBhIGZ1bmN0aW9uIGluIFIgY2FsbGVkICJzdW1tYXJ5U0UiIHRoYXQgY2FuIGdlbmVyYXRlIHRoZSBkYXRhIHdlIG5lZWQgZm9yIHRoaXMgcGxvdC4gSGVyZSdzIHRoZSBiYXNpYyBzdHJ1Y3R1cmU6CgpteVN0YXRzPC1zdW1tYXJ5U0UoZGF0YT1teURhdGEsIG1lYXN1cmV2YXI9Ik15Q29sdW1uTmFtZSIsIGNvbmYuaW50ZXJ2YWwgPSAwLjk1KQoKd2hlcmUgbXlEYXRhIGlzIHlvdXIgZGF0YSBmcmFtZSwgIk15Q29sdW1uTmFtZSIgaXMgdGhlIG5hbWUgb2YgdGhlIGNvbHVtbiB0byBtZWFzdXJlLCBhbmQgY29uZi5pbnRlcnZhbCBpcyB0aGUgcGVyY2VudCBjb25maWRlbmNlIGludGVydmFsIHlvdSB3YW50IHRvIGNvbXB1dGUuIAoKQWRhcHQgdGhlIHN1bW1hcnlTRSBjb21tYW5kIHRvIHlvdXIgZGF0YSwgYW5kIHJ1biBhbmQgcHJpbnQgaXQgYmVsb3c6CgpgYGB7cn0KIyBhc3NpZ24gYSB2YXJpYWJsZSB0byB0aGUgc3VtbWFyeVNFIGZ1bmN0aW9uIGFzIGRlc2NyaWJlZCBieSBjb3B5aW5nIHRoZSBjb2RlIGFib3ZlIGFuZCBwYXN0aW5nIGl0IGJlbG93LCBjaGFuZ2luZyBhbnkgbmFtZXMgdG8gbWF0Y2ggeW91ciBkYXRhOgoKCiMgcHJpbnQgdGhlIHZhcmlhYmxlOgoKYGBgCgoKClRoaXMgZnVuY3Rpb24gZ2VuZXJhdGVzIGEgbmV3IGRhdGEgZnJhbWUgd2l0aCB0aGUgY2FsY3VsYXRlZCBzdGF0aXN0aWNzIG1lYW4gKHRoZSBjb2x1bW4gbmFtZSB3aWxsIG1hdGNoICJNeUNvbHVtbk5hbWUiKSwgc3RhbmRhcmQgZGV2aWF0aW9uIChzZCksIHN0YW5kYXJkIGVycm9yIChzZSksIGFuZCBjb25maWRlbmNlIGludGVydmFsIChjaSkuIEluIG9yZGVyIHRvIGdldCBhbmQgdXNlIHRoaXMgZGF0YSwgeW91J2xsIG5lZWQgdG8gY3JlYXRlIG5ldyB2YXJpYWJsZXMuIFlvdSBjYW4gZG8gdGhpcyBieSB1c2luZyB0aGUgIiQiIG9wZXJhdG9yLCB3aGljaCBsZXRzIHlvdSBzcGVjaWZ5IGEgc3BlY2lmaWMgY29sdW1uIHdpdGhpbiBhIGRhdGFmcmFtZS4gRm9yIGV4YW1wbGUsIGlmIHlvdXIgZGF0YSBmcmFtZSBpcyBuYW1lZCBteVN0YXRzLCBhbmQgeW91IHdhbnQgdG8gZ2V0IHRoZSAiY2kiIGRhdGEsIHlvdXIgdmFyaWFibGUgd291bGQgbG9vayBsaWtlIHRoaXM6CgpteUNJPC1teVN0YXRzJGNpCgpCZWxvdywgY3JlYXRlIHZhcmlhYmxlcyBmb3IgdGhlIG1lYW4sIGNpLCBhbmQgdGhlIHVwcGVyIGFuZCBsb3dlciBsaW1pdHMgb2YgdGhlIGNvbmZpZGVuY2UgaW50ZXJ2YWwgKGhpbnQ6IGNhbGwgdGhlIHVwcGVyIGxpbWl0IHltYXggYW5kIGRlZmluZSBpdCBhcyB0aGUgbWVhbitjaSwgY2FsbCB0aGUgbG93ZXIgbGltaXQgeW1pbiBhbmQgZGVmaW5lIGl0IGFzIHRoZSBtZWFuLWNpKQoKCmBgYHtyfQojIGNyZWF0ZSB2YXJpYWJsZSBmb3IgdGhlIG1lYW4KCiMgY3JlYXRlIHZhcmlhYmxlIGZvciB0aGUgY2kgdmFsdWUKCiMgY3JlYXRlIHZhcmlhYmxlIGZvciBjaSB1cHBlciBsaW1pdAoKIyBjcmVhdGUgdmFyaWFibGUgZm9yIGNpIGxvd2VyIGxpbWl0CgoKYGBgCgojIyBQbG90cyB3aXRoIGdncGxvdAoKTm93IHdlIGhhdmUgdGhlIGRhdGEgbmVlZGVkIHRvIGNyZWF0ZSBhIHBsb3QuIEJlZ2lubmluZyB3aXRoIHRoaXMgbGFiLCB3ZSdyZSBnb2luZyB0byBiZSB1c2luZyAiZ2dwbG90Iiwgd2hpY2ggaXMgYSB2ZXJ5IHBvcHVsYXIgbGlicmFyeSBmb3IgY3JlYXRpbmcgZGF0YSB2aXN1YWxpemF0aW9ucyBpbiBSLiBXZSdyZSBsaWtlbHkgZ29pbmcgdG8gdXNlIGdncGxvdCBmb3IgdGhlIHJlbWFpbmRlciBvZiB0aGUgbGFicyB0aGlzIHNlbWVzdGVyLgoKVGhlICJnZyIgdHJhbnNsYXRlcyB0byAiZ3JhbW1hciBvZiBncmFwaGljcyIsIGFuZCBpcyBmb3VuZGVkIGluIHRoZSBpZGVhIHRoYXQgYWxsIGRhdGEgdmlzdWFsaXphdGlvbnMgYXJlIGNvbXByaXNlZCBvZiB0aHJlZSBjb21wb25lbnRzOgoKKiBkYXRhIHNldAoqIGFlc3RoZXRpY3MsIG9yIHZpc3VhbCBtYXJrcyB0aGF0IHJlcHJlc2VudCB0aGUgZGF0YSAoaS5lLiB0aGUgc3R1ZmYgdGhhdCB5b3Ugc2VlKQoqIGdlb21ldHJpYyBvYmplY3RzLCBvciAiZ2VvbXMiIChlLmcgdGhlIHR5cGUgb2YgcGxvdCkKCkxldCdzIGZpcnN0IGxvb2sgYXQgdGhlIGJhc2ljIHN0cnVjdHVyZSBvZiBnZ3Bsb3QgY29kZToKCmdncGxvdChkYXRhPW15RGF0YSwgbWFwcGluZz1hZXMoeD1zb21lVmFsdWUsIHk9YW5vdGhlclZhbHVlKSkrZ2VvbV9wb2ludCgpCgpJbiB0aGUgY29kZSBhYm92ZSwgdGhlIHRocmVlIGNvbXBvbmVudHMgYXJlIHJlcHJlc2VudGVkIGFzIHN1Y2g6CgoqIGRhdGEgc2V0IGlzICJteURhdGEiLCB0eXBpY2FsbHkgYSB2YXJpYWJsZSByZXByZXNlbnRpbmcgYSBkYXRhIGZyYW1lCiogYWVzdGhldGljcyAobWFwcGluZz1hZXMoLi4uKSkgcmVmZXJzIHRvIHRoZSBwb2ludHMgb3IgZGF0YSB0aGF0IGFwcGVhci4gVGhlIHZhbHVlcyBpbiB0aGUgYWVzIHBvcnRpb24gY2FuIHZhcnkgZGVwZW5kaW5nIHVwb24gdGhlIHR5cGUgb2YgcGxvdCB5b3UgY3JlYXRlIChyZWZlciB0byB0aGUgZ2dwbG90Mi1jaGVhdHNoZWV0LnBkZiBpbiB0aGUgZmlsZXMgc2VjdGlvbiBmb3IgbW9yZSBpbmZvKS4geCBhbmQgeSBjb3VsZCBiZSBhIHNpbmdsZSBwb2ludCBvciB2YXJpYWJsZSwgcmVmZXIgdG8gYSBjb2x1bW4gb2YgZGF0YSwgb3IgY291bGQgYmUgdGV4dC4KKiB0aGUgZ2VvbSwgb3IgdHlwZSBvZiBwbG90LCBpcyByZXByZXNlbnRlZCBieSAiZ2VvbV9wb2ludCgpIi4gRWFjaCB0eXBlIG9mIHBsb3QgaGFzIGEgZGlmZmVyZW50IGZ1bmN0aW9uIChlLmcuIGdlb21fYmFyKCksIGdlb21fbGluZSgpLCBldGMuKS4KCk5vdGljZSB0aGF0ICJnZW9tX3BvaW50KCkiIGlzIHByb2NlZWRlZCB3aXRoIGEgIisiLiBUaGUgIisiIGlzIHBhcnQgb2YgdGhlIGdncGxvdCBzeW50YXgsIGFuZCBpcyBhIHdheSB0byAiY2hhaW4iIGZ1bmN0aW9ucyB0b2dldGhlci4gV2UnbGwgZG8gbW9yZSBvZiB0aGlzIHNvb24gdG8gYWRkIG1vcmUgY29tcG9uZW50cyB0byB0aGUgcGxvdC4gCgpTdGFydCBvZmYgYnkgY3JlYXRpbmcgYSBwbG90IHVzaW5nIHRoZSBjb2RlIHNhbXBsZSBhYm92ZS4gTWFrZSBzdXJlIHlvdSB1c2UgeW91ciB2YXJpYWJsZSBmb3IgdGhlIGRhdGEgZnJhbWUgaW4gdGhlICJkYXRhPSIgcG9ydGlvbiwgdXNlIHlvdXIgbWVhbiB2YXJpYWJsZSBmb3IgdGhlIHktdmFsdWUsIGFuZCBzZXQgdGhlIHgtdmFsdWUgZXF1YWwgdG8gc29tZSBkZXNjcmlwdGl2ZSB0ZXh0IChzaW5jZSBpdCdzIHRleHQsIG1ha2Ugc3VyZSB5b3UgdXNlIHF1b3Rlcykgb3IgeW91IGNhbiBoYXZlIGVtcHR5ICIiIHRvIGxlYXZlIHRoZSB4LWF4aXMgdW5sYWJlbGVkLgoKYGBge3J9CgojIGNvcHkgdGhlIGdncGxvdCBjb2RlIGZyb20gYWJvdmUgYW5kIGFkYXB0IGFzIG5lZWRlZCBmb3IgeW91ciBkYXRhOgoKCgpgYGAKCllvdSdsbCBub3RpY2UgdGhhdCB0aGUgeS1heGlzIGhhcyBhbiBhdXRvLWdlbmVyYXRlZCByYW5nZS4gTGV0J3MgZXhwbGljaXRseSBkZWZpbmUgb3VyIHJhbmdlIGJ5IGNoYWluaW5nIHRoZSAieWxpbSIgZnVuY3Rpb24gdG8gdGhlIGVuZCBvZiBvdXIgcGxvdC4geWxpbSB0YWtlcyBhbiBvcmRlcmVkIHBhaXIsIHJlcHJlc2VudGluZyB0aGUgbWluaW11bSBhbmQgbWF4aW1pbSB5LWF4aXMgdmFsdWVzIChlLmcuIHlsaW0oMCwxMDApKS4gTWFrZSBzdXJlIHlvdSBzdGFydCB3aXRoIDAsIGFuZCB1c2UgYSByZWFzb25hYmxlIHZhbHVlIGZvciB0aGUgbWF4LgoKYGBge3J9CiMgcmVkbyB5b3VyIHBsb3QgYnkgY29weWluZyBhbmQgcGFzdGluZyB5b3VyIHByZXZpb3VzIGNvZGUgYmVsb3csIGFuZCBjaGFpbiAieWxpbSIgdG8gdGhlIGVuZAoKCmBgYAoKTm93IGxldCdzIGFkZCB0aGUgZXJyb3IgYmFycyByZXByZXNlbnRpbmcgdGhlIDk1JSBjb25maWRlbmNlIGludGVydmFsLiBJdCdzIHRoZSBzYW1lIGNvZGUgeW91IGp1c3Qgd3JvdGUsIHBsdXMgY2hhaW5pbmcgdGhlIGdlb21fZXJyb3JiYXIoKSBmdW5jdGlvbi4gU2luY2UgdGhlIGVycm9yIGJhciBpcyAic3R1ZmYgdGhhdCB5b3Ugc2VlIiwgeW91IHVzZSB0aGUgc2FtZSAibWFwcGluZz1hZXMoLi4uKSIgc3ludGF4IGFzIGluIHRoZSBnZ3Bsb3QoKSBmdW5jdGlvbi4gSW4gdGhpcyBjYXNlLCBpdCB3b3VsZCBsb29rIGxpa2U6CgpnZW9tX2Vycm9yYmFyKG1hcHBpbmc9YWVzKHltaW49bWluVmFsdWUsIHltYXg9bWF4VmFsdWUpKQoKWW91IGNhbiBhbHNvIGFkanVzdCB0aGUgd2lkdGggb2YgeW91ciBlcnJvcmJhciBsaWtlIHRoaXM6CgpnZW9tX2Vycm9yYmFyKG1hcHBpbmc9YWVzKHltaW49bWluVmFsdWUsIHltYXg9bWF4VmFsdWUpLCB3aWR0aD0wLjUpCgpCZWxvdywgY2hhaW4gdGhpcyBmdW5jdGlvbiBvbiB0byB5b3VyIHBsb3QgY29kZSwgYW5kIHVzZSB5b3VyIGNvbmZpZGVuY2UgaW50ZXJ2YWwgbWluICYgbWF4IGZvciB0aGUgeW1pbiBhbmQgeW1heCB2YWx1ZXMuIFBsYXkgYXJvdW5kIHdpdGggZGlmZmVyZW50IHZhbHVlcyBmb3IgIndpZHRoIiwgdW50aWwgaXQgc2VlbXMgb2sgdG8geW91OgoKYGBge3J9CgojIHBhc3RlIHlvdXIgcGxvdCBjb2RlIGJlbG93LCBhZGRpbmcgdGhlIGdlb21fZXJyb3JiYXIoKSBmdW5jdGlvbiBzaG93biBhYm92ZQoKCmBgYAoKCkZpbmFsbHksIHlvdSBjYW4gYWRkIGN1c3RvbSBsYWJlbHMgYnkgY2hhaW5pbmcgdGhlIGxhYnMoKSBmdW5jdGlvbiB0byB5b3VyIGdncGxvdCBjb2RlLiBUaGUgc3ludGF4IGlzOgoKbGFicyh0aXRsZT0ibXkgdGl0bGUiLCB4PSJteSB4IGxhYmVsIiwgeT0ibXkgeSBheGlzIGxhYmVsIikKClRvZGF5LCB5b3UgY2FuIG9taXQgdGhlIHRpdGxlIGFuZCBsZWF2ZSB0aGUgeCBsYWJlbCBlbXB0eSAiIiBzaW5jZSB5b3Ugd2lsbCB3cml0ZSBhIGZpZ3VyZSB0aXRsZSBhbmQgY2FwdGlvbiB0byBhZGQgdG8geW91ciBwbG90IGxhdGVyLgoKQ2hhaW4gdGhpcyB0byB5b3VyIGNvZGUsIGFuZCBydW4gaXQgYmVsb3c6CgpgYGB7cn0KCiMgZmluYWwgcGxvdCwgY2hhaW5pbmcgdGhlIGxhYnMoKSBmdW5jdGlvbjoKCgpgYGAKCgoKTWFrZSBzdXJlIHlvdSBjb3B5IGFuZCBzYXZlIHlvdXIgcGxvdCBhbmQgcHJpbnQgaXQgd2l0aCBhIGRldGFpbGVkIGNhcHRpb24gdG8gdHVybiBpbiB0byB5b3VyIGluc3RydWN0b3IuCgo=</div>
 
 
 
