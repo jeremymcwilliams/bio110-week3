@@ -1,4 +1,5 @@
 
+
 ---
 title: "Bio 110 Week 3"
 output:
@@ -92,7 +93,7 @@ This function generates a new data frame with the calculated statistics mean (th
 
 myCI<-myStats$ci
 
-Below, create variables for the mean, ci, and the upper and lower limits of the confidence interval (hint: call the upper limit ymax and define it as the mean+ci, call the lower limit ymin and define it as the mean-ci)
+Below, create variables for the mean, ci, and the upper and lower limits of the confidence interval (hint: call the upper limit maxValue and define it as the mean+ci, call the lower limit minValue and define it as the mean-ci)
 
 
 ```{r}
